@@ -6,13 +6,16 @@ resource "aws_spot_instance_request" "rabbitmq" {
   vpc_security_group_ids = [aws_security_group.main.id]
   iam_instance_profile   = aws_iam_instance_profile.main.name
 
+  user_data = base64encode(templatefile("${path.module}/userdata.sh", {
+    component = "rabbitmq"
+    env       = var.env
+  }))
+
+
+
   tags = merge(var.tags, { Name = "${var.env}-rabbitmq" })
 }
 
-user_data = base64encode(templatefile("${path.module}/userdata.sh", {
-  component = "rabbitmq"
-  env       = var.env
-} ))
 
 resource "aws_ec2_tag" "name-tag" {
   key         = "Name"
