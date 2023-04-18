@@ -11,8 +11,6 @@ resource "aws_spot_instance_request" "rabbitmq" {
     env       = var.env
   }))
 
-
-
   tags = merge(var.tags, { Name = "${var.env}-rabbitmq" })
 }
 
